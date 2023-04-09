@@ -1,0 +1,217 @@
+from abc import ABC
+
+import autopep8 as autopep8
+import self as self
+
+from DNN import DNN
+from Layer import Layer
+import json
+
+
+class Cnn(DNN, ABC):
+    batch_size = None
+    learning_rate = None
+    csv_path = None
+    num_epochs = None
+    optimizer = None
+    loss_fun = None
+    train = True
+    layers = []
+    conv_lyr, mxpool_lyr, depthwise_lyr, avgpool_lyr, flatten_lyr, fc_lyr, pointwise_lyr = 'a' * 7
+    torch_code = f'''
+# import the necessary packages
+import os
+import torch
+from torch.nn import Module
+from torch.nn import Conv2d
+from torch.nn import Linear
+from torch.nn import MaxPool2d
+from torch.nn import ReLU
+from torch.nn import LogSoftmax
+from torch import flatten
+from torch import nn
+from torch.testing._internal.common_utils import args
+import pandas as pd
+from torch.optim import Adadelta
+from torch.utils.data import Dataset, random_split, DataLoader\n'''
+    training_code = f'''
+# import the necessary packages
+import os
+import torch
+from torch.nn import Module
+from torch.nn import Conv2d
+from torch.nn import Linear
+from torch.nn import MaxPool2d
+from torch.nn import ReLU
+from torch.nn import LogSoftmax
+from torch import flatten
+from torch import nn
+from torch.testing._internal.common_utils import args
+import pandas as pd
+from torch.optim import Adadelta
+from model import CNN
+from torch.utils.data import Dataset, random_split, DataLoader\n'''
+
+    def parse_json(self):
+        with open("C:/Users/HP/Downloads/GP/2022_GP/build-GP-Desktop_Qt_6_4_2_MinGW_64_bit-Debug/arch.json",
+                  'r') as f:
+            data = json.load(f)
+
+        for layer in data['layers']:
+            name = layer['name']
+            filters = layer['filters']
+            channels = layer['channels']
+            height = layer['height']
+            width = layer['width']
+            kernel_size = layer['kernel_size']
+            stride = layer['stride']
+            padding = layer['padding']
+            units = layer['units']
+            layer = Layer(channels, filters, width, height, units, stride, padding, name, kernel_size)
+            self.layers.append(layer)
+            #print(layer.name)
+        self.batch_size = data['params'][0]['batch_size']
+        self.learning_rate= data['params'][0]['learning_rate']
+        self.optimizer = data['params'][0]['optimizer']
+        self.csv_path = data['params'][0]['csv_path']
+        self.loss_fun = data['params'][0]['loss_fun']
+        self.num_epochs = data['params'][0]['num_epochs']
+
+
+    def create_layers(self):
+        self.forward = '    def forward(self,x):\n'
+        self.torch_code += \
+        f'''class CNN(nn.Module):
+    def __init__(self):     
+        super(CNN,self).__init__()\n'''
+        print(self.layers[0])
+        for layer in self.layers:
+            if 'conv' in layer.name:
+                ascii = ord(self.conv_lyr)
+                self.torch_code += \
+                    f'''        self.conv{self.conv_lyr}=nn.Conv2d(in_channels={layer.channels},out_channels={layer.filters},kernel_size={layer.kernel_size},padding={layer.padding},stride={layer.stride})\n'''
+                self.forward += f'      out=self.conv{self.conv_lyr}(x)\n'
+                ascii += 1
+                self.conv_lyr = chr(ascii)
+            if 'max' in layer.name:
+                ascii = ord(self.mxpool_lyr)
+                self.torch_code += \
+                    f'''        self.max{self.mxpool_lyr}=nn.MaxPool2d({layer.kernel_size},stride={layer.stride},padding={layer.padding})\n'''
+                self.forward += f'      out=self.max{self.mxpool_lyr}(x)\n'
+                ascii += 1
+                self.mxpool_lyr = chr(ascii)
+            if 'avg' in layer.name:
+                ascii = ord(self.avgpool_lyr)
+                self.torch_code += \
+                    f'''        self.avg{self.mxpool_lyr}=nn.AvgPool2d({layer.kernel_size},stride={layer.stride},padding={layer.padding})\n'''
+                self.forward += f'      out=self.avg{self.avgpool_lyr}(x)\n'
+                ascii += 1
+                self.avgpool_lyr = chr(ascii)
+            if 'depthwise' in layer.name:
+                ascii = ord(self.depthwise_lyr)
+                self.torch_code += \
+                    f'''        self.depth_conv{self.depthwise_lyr}=nn.Conv2d(in_channels={layer.channels},out_channels={layer.channels},kernel_size={layer.kernel_size},padding={layer.padding},stride={layer.stride},groups={layer.channels})\nself.point_conv{self.pointwise_lyr}=nn.Conv2d(in_channels={layer.channels},out_channels={layer.filters},kernel_size=1,padding=0,stride=1)\n'''
+                self.forward += f'      out=self.depth_conv{self.conv_lyr}(x)\nself.point_conv{self.pointwise_lyr}(x)\n'
+                ascii += 1
+                self.depthwise_lyr = chr(ascii)
+                self.pointwise_lyr = chr(ascii)
+            if 'Full Connected' in layer.name:
+                ascii = ord(self.fc_lyr)
+                self.torch_code += \
+                    f'''        self.fc{self.fc_lyr}=nn.Linear(in_features={layer.channels}*{layer.height}*{layer.width},out_features={layer.filters})\n'''
+                self.forward += f'      out=self.fc{self.fc_lyr}(x)\n'
+                ascii += 1
+                self.fc_lyr = chr(ascii)
+        self.torch_code += '        self.relu=nn.ReLU()\n'
+        self.forward += '      return out\n\n'
+        self.torch_code += self.forward
+        file = open("model.py", "w")
+        file.write(self.torch_code)
+
+
+
+    def train_build(self):
+        self.training_code +=  \
+f'''
+#initiallization
+LR = 0.001
+BATCH_SIZE = {self.batch_size}
+EPOCHS = {self.num_epochs}
+TRAIN_SPLIT = 0.75
+VAL_SPLIT = 0.15
+TEST_SPLIT = 0.1
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+class CustomImageDataset(Dataset):
+    def __init__(self, annotations_file, img_dir, transform=None, target_transform=None):
+        self.img_labels = pd.read_csv(annotations_file)
+        self.img_dir = img_dir
+        self.transform = transform
+        self.target_transform = target_transform
+
+    def __len__(self):
+        return len(self.img_labels)
+
+    def __getitem__(self, idx):
+        img_path = os.path.join(self.img_dir, self.img_labels.iloc[idx, 0])
+        image = read_image(img_path)
+        label = self.img_labels.iloc[idx, 1]
+        if self.transform:
+            image = self.transform(image)
+        if self.target_transform:
+            label = self.target_transform(label)
+        return image, label
+#load dataset        
+dataset = CustomImageDataset({self.csv_path})
+model = CNN()
+size=dataset.__len__()
+train_dataset, val_dataset, test_dataset = random_split(dataset, [size*TRAIN_SPLIT, size*VAL_SPLIT, size*TEST_SPLIT],generator=torch.Generator().manual_seed(42))
+train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+val_dataloader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
+test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
+opt = {self.optimizer}(model.parameters(), lr={self.learning_rate})
+lossFn = nn.{self.loss_fun}()
+for e in range(0, EPOCHS):
+    # set the model in training mode
+    model.train()
+    # initialize the total training and validation loss
+    totalTrainLoss = 0
+    totalValLoss = 0
+    # initialize the number of correct predictions in the training
+    # and validation step
+    trainCorrect = 0
+    valCorrect = 0
+    # loop over the training set
+    for (x, y) in train_dataloader:
+        # send the input to the device
+        (x, y) = (x.to(device), y.to(device))
+        # perform a forward pass and calculate the training loss
+        pred = model(x)
+        loss = lossFn(pred, y)
+        # zero out the gradients, perform the backpropagation step,
+        # and update the weights
+        opt.zero_grad()
+        loss.backward()
+        opt.step()
+        # add the loss to the total training loss so far and
+        # calculate the number of correct predictions
+        totalTrainLoss += loss
+        trainCorrect += (pred.argmax(1) == y).type(
+            torch.float).sum().item()
+
+torch.save(model, args["model"])
+    
+'''
+        file = open("train.py", "w")
+        file.write(self.training_code)
+
+
+
+    def BuildModel(self):
+        self.parse_json()
+        self.create_layers()
+        #if self.train == True:
+        self.train_build()
+
+
+model = Cnn()
+model.BuildModel()
