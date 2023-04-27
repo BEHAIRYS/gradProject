@@ -1,7 +1,6 @@
 from abc import ABC
 
-import autopep8 as autopep8
-import self as self
+
 
 from DNN import DNN
 from Layer import Layer
@@ -90,36 +89,52 @@ from torch.utils.data import Dataset, random_split, DataLoader\n'''
                 ascii = ord(self.conv_lyr)
                 self.torch_code += \
                     f'''        self.conv{self.conv_lyr}=nn.Conv2d(in_channels={layer.channels},out_channels={layer.filters},kernel_size={layer.kernel_size},padding={layer.padding},stride={layer.stride})\n'''
-                self.forward += f'      out=self.conv{self.conv_lyr}(x)\n'
+                if(self.layers.index(layer)==0):
+                    self.forward += f'      out=self.conv{self.conv_lyr}(x)\n'
+                else:
+                    self.forward += f'      out=self.conv{self.conv_lyr}(out)\n'
                 ascii += 1
                 self.conv_lyr = chr(ascii)
             if 'max' in layer.name:
                 ascii = ord(self.mxpool_lyr)
                 self.torch_code += \
                     f'''        self.max{self.mxpool_lyr}=nn.MaxPool2d({layer.kernel_size},stride={layer.stride},padding={layer.padding})\n'''
-                self.forward += f'      out=self.max{self.mxpool_lyr}(x)\n'
+                if (self.layers.index(layer) == 0):
+                    self.forward += f'      out=self.max{self.mxpool_lyr}(x)\n'
+                else:
+                    self.forward += f'      out=self.max{self.mxpool_lyr}(out)\n'
                 ascii += 1
                 self.mxpool_lyr = chr(ascii)
             if 'avg' in layer.name:
                 ascii = ord(self.avgpool_lyr)
                 self.torch_code += \
                     f'''        self.avg{self.mxpool_lyr}=nn.AvgPool2d({layer.kernel_size},stride={layer.stride},padding={layer.padding})\n'''
-                self.forward += f'      out=self.avg{self.avgpool_lyr}(x)\n'
+                if (self.layers.index(layer) == 0):
+                    self.forward += f'      out=self.avg{self.avgpool_lyr}(x)\n'
+                else:
+                    self.forward += f'      out=self.avg{self.avgpool_lyr}(out)\n'
                 ascii += 1
                 self.avgpool_lyr = chr(ascii)
             if 'depthwise' in layer.name:
                 ascii = ord(self.depthwise_lyr)
                 self.torch_code += \
                     f'''        self.depth_conv{self.depthwise_lyr}=nn.Conv2d(in_channels={layer.channels},out_channels={layer.channels},kernel_size={layer.kernel_size},padding={layer.padding},stride={layer.stride},groups={layer.channels})\nself.point_conv{self.pointwise_lyr}=nn.Conv2d(in_channels={layer.channels},out_channels={layer.filters},kernel_size=1,padding=0,stride=1)\n'''
-                self.forward += f'      out=self.depth_conv{self.conv_lyr}(x)\nself.point_conv{self.pointwise_lyr}(x)\n'
+                if (self.layers.index(layer) == 0):
+                    self.forward += f'      out=self.depth_conv{self.conv_lyr}(x)\nself.point_conv{self.pointwise_lyr}(x)\n'
+                else:
+                    self.forward += f'      out=self.depth_conv{self.conv_lyr}(x)\nself.point_conv{self.pointwise_lyr}(out)\n'
+
                 ascii += 1
                 self.depthwise_lyr = chr(ascii)
                 self.pointwise_lyr = chr(ascii)
-            if 'Full Connected' in layer.name:
+            if 'FC' in layer.name:
                 ascii = ord(self.fc_lyr)
                 self.torch_code += \
                     f'''        self.fc{self.fc_lyr}=nn.Linear(in_features={layer.channels}*{layer.height}*{layer.width},out_features={layer.filters})\n'''
-                self.forward += f'      out=self.fc{self.fc_lyr}(x)\n'
+                if (self.layers.index(layer) == 0):
+                    self.forward += f'      out=self.fc{self.fc_lyr}(x)\n'
+                else:
+                    self.forward += f'      out=self.fc{self.fc_lyr}(out)\n'
                 ascii += 1
                 self.fc_lyr = chr(ascii)
         self.torch_code += '        self.relu=nn.ReLU()\n'
@@ -141,27 +156,6 @@ TRAIN_SPLIT = 0.75
 VAL_SPLIT = 0.15
 TEST_SPLIT = 0.1
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-class CustomImageDataset(Dataset):
-    def __init__(self, annotations_file, img_dir, transform=None, target_transform=None):
-        self.img_labels = pd.read_csv(annotations_file)
-        self.img_dir = img_dir
-        self.transform = transform
-        self.target_transform = target_transform
-
-    def __len__(self):
-        return len(self.img_labels)
-
-    def __getitem__(self, idx):
-        img_path = os.path.join(self.img_dir, self.img_labels.iloc[idx, 0])
-        image = read_image(img_path)
-        label = self.img_labels.iloc[idx, 1]
-        if self.transform:
-            image = self.transform(image)
-        if self.target_transform:
-            label = self.target_transform(label)
-        return image, label
-#load dataset        
-dataset = CustomImageDataset({self.csv_path})
 model = CNN()
 size=dataset.__len__()
 train_dataset, val_dataset, test_dataset = random_split(dataset, [size*TRAIN_SPLIT, size*VAL_SPLIT, size*TEST_SPLIT],generator=torch.Generator().manual_seed(42))
