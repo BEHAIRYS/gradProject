@@ -37,6 +37,9 @@ from torch.utils.data import Dataset, random_split, DataLoader\n'''
 # import the necessary packages
 import os
 import torch
+from torchvision.datasets import mnist
+from torchvision.transforms import ToTensor
+from torch.optim import Adadelta, Adam
 from torch.nn import Module
 from torch.nn import Conv2d
 from torch.nn import Linear
@@ -131,6 +134,7 @@ from torch.utils.data import Dataset, random_split, DataLoader\n'''
                 ascii = ord(self.fc_lyr)
                 self.torch_code += \
                     f'''        self.fc{self.fc_lyr}=nn.Linear(in_features={layer.channels}*{layer.height}*{layer.width},out_features={layer.filters})\n'''
+                self.training_code+=f'''        out= out.view(out.shape[0], -1)'''
                 if (self.layers.index(layer) == 0):
                     self.forward += f'      out=self.fc{self.fc_lyr}(x)\n'
                 else:
@@ -157,10 +161,12 @@ VAL_SPLIT = 0.15
 TEST_SPLIT = 0.1
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = CNN()
-size=dataset.__len__()
-train_dataset, val_dataset, test_dataset = random_split(dataset, [size*TRAIN_SPLIT, size*VAL_SPLIT, size*TEST_SPLIT],generator=torch.Generator().manual_seed(42))
+#size=dataset.__len__()
+#train_dataset, val_dataset, test_dataset = random_split(dataset, [size*TRAIN_SPLIT, size*VAL_SPLIT, size*TEST_SPLIT],generator=torch.Generator().manual_seed(42))
+train_dataset = mnist.MNIST(root='./train', train=True, transform=ToTensor())
+test_dataset = mnist.MNIST(root='./test', train=False, transform=ToTensor())
 train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
-val_dataloader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
+#val_dataloader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
 test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 opt = {self.optimizer}(model.parameters(), lr={self.learning_rate})
 lossFn = nn.{self.loss_fun}()
@@ -191,6 +197,8 @@ for e in range(0, EPOCHS):
         totalTrainLoss += loss
         trainCorrect += (pred.argmax(1) == y).type(
             torch.float).sum().item()
+    model.eval()
+    print(trainCorrect)
 
 torch.save(model, args["model"])
     
