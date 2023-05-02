@@ -17,7 +17,7 @@ class CNN(nn.Module):
       out=self.maxa(out)
       out=self.convb(out)
       out=self.maxb(out)
-      out = out.view(out.shape[0], -1)
+      out= out.view(out.shape[0], -1)
       out=self.fca(out)
       out=self.fcb(out)
       out=self.fcc(out)
