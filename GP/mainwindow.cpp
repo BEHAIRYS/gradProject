@@ -56,18 +56,18 @@ MainWindow::MainWindow(QWidget *parent)
     model->setVerticalHeaderLabels(verticalHeader);
     model_2->setHorizontalHeaderLabels(horizontalHeader_2);
     model_2->setVerticalHeaderLabels(verticalHeader_2);
-    QModelIndex index_31 = model_2->index(0,0,QModelIndex());
-    model_2->setData(index_31, "Data Width");
-    QModelIndex index_32 = model_2->index(1,0,QModelIndex());
-    model_2->setData(index_32, "Mantissa");
-    QModelIndex index_33 = model_2->index(2,0,QModelIndex());
-    model_2->setData(index_33, "Exponent");
+//    QModelIndex index_31 = model_2->index(0,0,QModelIndex());
+//    model_2->setData(index_31, "Data Width");
+//    QModelIndex index_32 = model_2->index(1,0,QModelIndex());
+//    model_2->setData(index_32, "Mantissa");
+//    QModelIndex index_33 = model_2->index(2,0,QModelIndex());
+//    model_2->setData(index_33, "Exponent");
     QModelIndex index_34 = model_2->index(3,0,QModelIndex());
     model_2->setData(index_34, "Input Width");
     QModelIndex index_35 = model_2->index(4,0,QModelIndex());
     model_2->setData(index_35, "Input Height");
-    QModelIndex index_36 = model_2->index(5,0,QModelIndex());
-    model_2->setData(index_36, "Output Files Path");
+//    QModelIndex index_36 = model_2->index(5,0,QModelIndex());
+//    model_2->setData(index_36, "Output Files Path");
     QModelIndex index_37 = model_2->index(6,0,QModelIndex());
     model_2->setData(index_37, "Input Type");
     QModelIndex index_38 = model_2->index(7,0,QModelIndex());
@@ -210,17 +210,17 @@ void MainWindow::on_submit_clicked()
     model_2->setData(index_39, "Convolution Type");
 */
     QModelIndex index_21 = model_2->index(0,1,QModelIndex());
-    model_2->setData(index_21, ui->datawidth->text());
+    //model_2->setData(index_21, ui->datawidth->text());
     QModelIndex index_22 = model_2->index(1,1,QModelIndex());
-    model_2->setData(index_22, ui->mantissa->text());
+    //model_2->setData(index_22, ui->mantissa->text());
     QModelIndex index_23 = model_2->index(2,1,QModelIndex());
-    model_2->setData(index_23, ui->exponent->text());
+    //model_2->setData(index_23, ui->exponent->text());
     QModelIndex index_24 = model_2->index(3,1,QModelIndex());
     model_2->setData(index_24, ui->inputsize->text());
     QModelIndex index_25 = model_2->index(4,1,QModelIndex());
     model_2->setData(index_25, ui->InputHeight->text());
     QModelIndex index_26 = model_2->index(5,1,QModelIndex());
-    model_2->setData(index_26, ui->outputfile->text());
+    //model_2->setData(index_26, ui->outputfile->text());
     QModelIndex index_27 = model_2->index(6,1,QModelIndex());
     model_2->setData(index_27, input_type_color);
     QModelIndex index_28 = model_2->index(7,1,QModelIndex());
@@ -570,7 +570,7 @@ void MainWindow::onProcessOutputReady()
 
 }
 
-
+/*
 void MainWindow::on_pushButton_clicked()
 {
     QString data = ui->outputfile->text();
@@ -582,6 +582,7 @@ void MainWindow::on_pushButton_clicked()
 
 
 }
+*/
 
 
 void MainWindow::on_layer_currentIndexChanged(int index)
