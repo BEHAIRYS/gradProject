@@ -1,23 +1,22 @@
 
+# import the necessary packages
 import torch
 from torch import nn
 from torch.utils.data import DataLoader , TensorDataset
 from torchvision.datasets import mnist
 from torchvision.transforms import ToTensor
 from model import CNN
-
 from torch.optim import Adam
-"""
-df = pd.read_csv(f'csv_path', header=None)
-x = df.iloc[:, :-1]
-y = df.iloc[:, -1]
-x = torch.tensor(x.values)
-y = torch.tensor(y.values)
-dataset=TensorDataset(x,y)
-size = len(df)
-"""
+
+#df = pd.read_csv(f'csv_path', header=None)
+#x = df.iloc[:, :-1]
+#y = df.iloc[:, -1]
+#x = torch.tensor(x.values)
+#y = torch.tensor(y.values)
+#dataset=TensorDataset(x,y)
+#size = len(df)
 #initiallization
-LR = 1e-1
+LR = 0.001
 BATCH_SIZE = 256
 EPOCHS = 100
 TRAIN_SPLIT = 0.75
@@ -28,41 +27,42 @@ model = CNN()
 #size=dataset.__len__()
 #train_dataset, val_dataset, test_dataset = random_split(dataset, [size*TRAIN_SPLIT, size*VAL_SPLIT, size*TEST_SPLIT],generator=torch.Generator().manual_seed(42))
 train_dataset = mnist.MNIST(root='./train', train=True, transform=ToTensor())
-test_dataset = mnist.MNIST(root='./', train=False, transform=ToTensor())
+test_dataset = mnist.MNIST(root='./test', train=False, transform=ToTensor())
 train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 #val_dataloader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
 test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 opt = Adam(model.parameters(), lr=1e-1)
 lossFn = nn.CrossEntropyLoss()
-for e in range(0, 2):
-	# set the model in training mode
-	model.train()
-	# initialize the total training and validation loss
-	totalTrainLoss = 0
-	totalValLoss = 0
-	# initialize the number of correct predictions in the training
-	# and validation step
-	trainCorrect = 0
-	valCorrect = 0
-	# loop over the training set
-	for (x, y) in train_dataloader:
-		# send the input to the device
-		(x, y) = (x.to(device), y.to(device))
-		# perform a forward pass and calculate the training loss
-		pred = model(x)
-		loss = lossFn(pred, y)
-		# zero out the gradients, perform the backpropagation step,
-		# and update the weights
-		opt.zero_grad()
-		loss.backward()
-		opt.step()
-		# add the loss to the total training loss so far and
-		# calculate the number of correct predictions
-		totalTrainLoss += loss
-		trainCorrect += (pred.argmax(1) == y).type(
-			torch.float).sum().item()
-	print(trainCorrect)
-	"""
+for e in range(0, EPOCHS):
+    # set the model in training mode
+    model.train()
+    # initialize the total training and validation loss
+    totalTrainLoss = 0
+    totalValLoss = 0
+    # initialize the number of correct predictions in the training
+    # and validation step
+    trainCorrect = 0
+    valCorrect = 0
+    # loop over the training set
+    for (x, y) in train_dataloader:
+        # send the input to the device
+        (x, y) = (x.to(device), y.to(device))
+        # perform a forward pass and calculate the training loss
+        pred = model(x)
+        loss = lossFn(pred, y)
+        # zero out the gradients, perform the backpropagation step,
+        # and update the weights
+        opt.zero_grad()
+        loss.backward()
+        opt.step()
+        # add the loss to the total training loss so far and
+        # calculate the number of correct predictions
+        totalTrainLoss += loss
+        trainCorrect += (pred.argmax(1) == y).type(
+            torch.float).sum().item()
+    model.eval()
+    print(trainCorrect)
+"""
 # switch off autograd for evaluation
 with torch.no_grad():
 		# set the model in evaluation mode
@@ -96,3 +96,4 @@ with torch.no_grad():
 
 torch.save(model.state_dict(), "model.pth")
 
+    

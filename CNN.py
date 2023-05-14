@@ -1,7 +1,5 @@
 from abc import ABC
 
-
-
 from DNN import DNN
 from Layer import Layer
 import json
@@ -19,40 +17,16 @@ class Cnn(DNN, ABC):
     conv_lyr, mxpool_lyr, depthwise_lyr, avgpool_lyr, flatten_lyr, fc_lyr, pointwise_lyr = 'a' * 7
     torch_code = f'''
 # import the necessary packages
-import os
-import torch
-from torch.nn import Module
-from torch.nn import Conv2d
-from torch.nn import Linear
-from torch.nn import MaxPool2d
-from torch.nn import ReLU
-from torch.nn import LogSoftmax
-from torch import flatten
-from torch import nn
-from torch.testing._internal.common_utils import args
-import pandas as pd
-from torch.optim import Adadelta
-from torch.utils.data import Dataset, random_split, DataLoader\n'''
+from torch import nn\n'''
     training_code = f'''
 # import the necessary packages
-import os
 import torch
+from torch import nn
+from torch.utils.data import DataLoader , TensorDataset
 from torchvision.datasets import mnist
 from torchvision.transforms import ToTensor
-from torch.optim import Adadelta, Adam
-from torch.nn import Module
-from torch.nn import Conv2d
-from torch.nn import Linear
-from torch.nn import MaxPool2d
-from torch.nn import ReLU
-from torch.nn import LogSoftmax
-from torch import flatten
-from torch import nn
-from torch.testing._internal.common_utils import args
-import pandas as pd
-from torch.optim import Adadelta
 from model import CNN
-from torch.utils.data import Dataset, random_split, DataLoader\n'''
+from torch.optim import Adam\n'''
 
     def parse_json(self):
         with open("C:/Users/HP/Downloads/GP/2022_GP/build-GP-Desktop_Qt_6_4_2_MinGW_64_bit-Debug/arch.json",
@@ -71,19 +45,18 @@ from torch.utils.data import Dataset, random_split, DataLoader\n'''
             units = layer['units']
             layer = Layer(channels, filters, width, height, units, stride, padding, name, kernel_size)
             self.layers.append(layer)
-            #print(layer.name)
+            # print(layer.name)
         self.batch_size = data['params'][0]['batch_size']
-        self.learning_rate= data['params'][0]['learning_rate']
+        self.learning_rate = data['params'][0]['learning_rate']
         self.optimizer = data['params'][0]['optimizer']
         self.csv_path = data['params'][0]['csv_path']
         self.loss_fun = data['params'][0]['loss_fun']
         self.num_epochs = data['params'][0]['num_epochs']
 
-
     def create_layers(self):
         self.forward = '    def forward(self,x):\n'
         self.torch_code += \
-        f'''class CNN(nn.Module):
+            f'''class CNN(nn.Module):
     def __init__(self):     
         super(CNN,self).__init__()\n'''
         print(self.layers[0])
@@ -92,7 +65,7 @@ from torch.utils.data import Dataset, random_split, DataLoader\n'''
                 ascii = ord(self.conv_lyr)
                 self.torch_code += \
                     f'''        self.conv{self.conv_lyr}=nn.Conv2d(in_channels={layer.channels},out_channels={layer.filters},kernel_size={layer.kernel_size},padding={layer.padding},stride={layer.stride})\n'''
-                if(self.layers.index(layer)==0):
+                if (self.layers.index(layer) == 0):
                     self.forward += f'      out=self.conv{self.conv_lyr}(x)\n'
                 else:
                     self.forward += f'      out=self.conv{self.conv_lyr}(out)\n'
@@ -134,7 +107,8 @@ from torch.utils.data import Dataset, random_split, DataLoader\n'''
                 ascii = ord(self.fc_lyr)
                 self.torch_code += \
                     f'''        self.fc{self.fc_lyr}=nn.Linear(in_features={layer.channels}*{layer.height}*{layer.width},out_features={layer.filters})\n'''
-                self.training_code+=f'''        out= out.view(out.shape[0], -1)'''
+                if self.fc_lyr == 'a':
+                    self.forward += f'''      out= out.view(out.shape[0], -1)\n'''
                 if (self.layers.index(layer) == 0):
                     self.forward += f'      out=self.fc{self.fc_lyr}(x)\n'
                 else:
@@ -147,11 +121,16 @@ from torch.utils.data import Dataset, random_split, DataLoader\n'''
         file = open("model.py", "w")
         file.write(self.torch_code)
 
-
-
     def train_build(self):
-        self.training_code +=  \
-f'''
+        self.training_code += \
+            f'''
+#df = pd.read_csv(f'csv_path', header=None)
+#x = df.iloc[:, :-1]
+#y = df.iloc[:, -1]
+#x = torch.tensor(x.values)
+#y = torch.tensor(y.values)
+#dataset=TensorDataset(x,y)
+#size = len(df)
 #initiallization
 LR = 0.001
 BATCH_SIZE = {self.batch_size}
@@ -199,19 +178,49 @@ for e in range(0, EPOCHS):
             torch.float).sum().item()
     model.eval()
     print(trainCorrect)
+"""
+# switch off autograd for evaluation
+with torch.no_grad():
+		# set the model in evaluation mode
+		model.eval()
+		# loop over the validation set
+		for (x, y) in val_dataloader:
+			# send the input to the device
+			(x, y) = (x.to(device), y.to(device))
+			# make the predictions and calculate the validation loss
+			pred = model(x)
+			totalValLoss += lossFn(pred, y)
+			# calculate the number of correct predictions
+			valCorrect += (pred.argmax(1) == y).type(
+				torch.float).sum().item()  
+	# calculate the training and validation accuracy
+	trainCorrect = trainCorrect / len(trainDataLoader.dataset)
+	valCorrect = valCorrect / len(valDataLoader.dataset)
+	"""
+with torch.no_grad():
+	model.eval()
+	# initialize a list to store our predictions
+	preds = []
+	testCorrect=0
+	for(x,y) in test_dataloader:
+		x=(x.to(device))
+		pred =model(x)
+		preds.extend(pred.argmax(axis=1).cpu().numpy())
+		testCorrect += (pred.argmax(1) == y).type(
+				torch.float).sum().item()
+		print(testCorrect)
 
-torch.save(model, args["model"])
+torch.save(model.state_dict(), "model.pth")
+
     
 '''
         file = open("train.py", "w")
         file.write(self.training_code)
 
-
-
     def BuildModel(self):
         self.parse_json()
         self.create_layers()
-        #if self.train == True:
+        # if self.train == True:
         self.train_build()
 
 

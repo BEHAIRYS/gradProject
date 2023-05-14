@@ -8,7 +8,7 @@ class CNN(nn.Module):
         self.maxa=nn.MaxPool2d(2,stride=1,padding=0)
         self.convb=nn.Conv2d(in_channels=5,out_channels=16,kernel_size=6,padding=0,stride=1)
         self.maxb=nn.MaxPool2d(2,stride=1,padding=0)
-        self.fca=nn.Linear(in_features=4096,out_features=120)
+        self.fca=nn.Linear(in_features=4096*1*1,out_features=120)
         self.fcb=nn.Linear(in_features=120*1*1,out_features=84)
         self.fcc=nn.Linear(in_features=84*1*1,out_features=10)
         self.relu=nn.ReLU()
