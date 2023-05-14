@@ -33,7 +33,7 @@ train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True
 test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 opt = Adam(model.parameters(), lr=1e-1)
 lossFn = nn.CrossEntropyLoss()
-for e in range(0, EPOCHS):
+for e in range(0, 2):
     # set the model in training mode
     model.train()
     # initialize the total training and validation loss
@@ -94,6 +94,6 @@ with torch.no_grad():
 				torch.float).sum().item()
 		print(testCorrect)
 
-torch.save(model.state_dict(), "model.pth")
+torch.save(model.state_dict(), "model.pt")
 
     
