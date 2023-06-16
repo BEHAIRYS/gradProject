@@ -29,13 +29,7 @@ from torchvision.transforms import ToTensor
 from model import CNN
 from torch.optim import Adadelta
 from torch.optim import Adam\n'''
-    def run_systemC(self):
-        cpp_file_path = "C:/Users/HP/source/repos/QTtest/QTtest/QTtest.cpp"
 
-        # Compile the C++ file
-        subprocess.run(["g++", cpp_file_path, "-o", "output"])
-        # Run the compiled executable
-        subprocess.run(["./output"])
 
     def parse_json(self):
         with open("C:/Users/HP/Downloads/GP/2022_GP/build-GP-Desktop_Qt_6_4_2_MinGW_64_bit-Debug/arch.json",
@@ -229,9 +223,9 @@ torch.save(model.state_dict(), "model.pth")
     def BuildModel(self):
         self.parse_json()
         self.create_layers()
-        # if self.train == True:
-        self.train_build()
-        self.run_systemC()
+        if self.csv_path != '':
+            self.train_build()
+
 
 
 model = Cnn()

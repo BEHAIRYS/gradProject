@@ -23,12 +23,62 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="font">
+       <font>
+        <family>Siemens Sans</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(222, 222, 222);</string>
       </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
+      <widget class="QWidget" name="Dashboard">
+       <attribute name="title">
+        <string>Welcome Screen</string>
+       </attribute>
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>260</y>
+          <width>441</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+          <pointsize>14</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Application Specific Deep Learning Accelerator</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_2">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>120</y>
+          <width>681</width>
+          <height>131</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap>../../../../Desktop/Siemens-invert-logo-700x167.png</pixmap>
+        </property>
+       </widget>
+      </widget>
       <widget class="QWidget" name="tab">
        <attribute name="title">
         <string>Miscellaneous Parameters</string>
@@ -37,7 +87,7 @@
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>170</y>
+          <y>60</y>
           <width>154</width>
           <height>26</height>
          </rect>
@@ -47,6 +97,11 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: white;</string>
@@ -56,10 +111,15 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>130</y>
+          <y>20</y>
           <width>78</width>
           <height>20</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
         </property>
         <property name="text">
          <string>Input Width</string>
@@ -69,7 +129,7 @@
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>130</y>
+          <y>20</y>
           <width>154</width>
           <height>26</height>
          </rect>
@@ -80,6 +140,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true">background-color: white;</string>
         </property>
@@ -88,7 +153,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>170</y>
+          <y>60</y>
           <width>83</width>
           <height>20</height>
          </rect>
@@ -99,21 +164,13 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
+        </property>
         <property name="text">
          <string>Input Height</string>
-        </property>
-       </widget>
-       <widget class="Line" name="line">
-        <property name="geometry">
-         <rect>
-          <x>11</x>
-          <y>486</y>
-          <width>162</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
        <widget class="QTableView" name="tableView_2">
@@ -124,6 +181,11 @@
           <width>251</width>
           <height>401</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(255, 255, 255);
@@ -142,6 +204,11 @@
           <height>29</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
@@ -158,6 +225,11 @@
           <height>112</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
+        </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
           <widget class="QGroupBox" name="inputtype">
@@ -166,6 +238,11 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <family>Siemens Sans</family>
+            </font>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(222, 222, 222);</string>
@@ -176,6 +253,11 @@
            <layout class="QVBoxLayout" name="verticalLayout">
             <item>
              <widget class="QRadioButton" name="RGB">
+              <property name="font">
+               <font>
+                <family>Siemens Sans</family>
+               </font>
+              </property>
               <property name="text">
                <string>RGB</string>
               </property>
@@ -183,6 +265,11 @@
             </item>
             <item>
              <widget class="QRadioButton" name="GrayScale">
+              <property name="font">
+               <font>
+                <family>Siemens Sans</family>
+               </font>
+              </property>
               <property name="text">
                <string>Gray Scale</string>
               </property>
@@ -192,44 +279,17 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QGroupBox" name="arithmetictype">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(222, 222, 222);</string>
-           </property>
-           <property name="title">
-            <string>Arithmetic Type</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <item>
-             <widget class="QRadioButton" name="Float">
-              <property name="text">
-               <string>Float</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="Fixed">
-              <property name="text">
-               <string>Fixed</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item row="0" column="2">
           <widget class="QGroupBox" name="groupBox">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <family>Siemens Sans</family>
+            </font>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(222, 222, 222);</string>
@@ -246,6 +306,11 @@
               <height>24</height>
              </rect>
             </property>
+            <property name="font">
+             <font>
+              <family>Siemens Sans</family>
+             </font>
+            </property>
             <property name="text">
              <string>Standard </string>
             </property>
@@ -259,6 +324,11 @@
               <height>24</height>
              </rect>
             </property>
+            <property name="font">
+             <font>
+              <family>Siemens Sans</family>
+             </font>
+            </property>
             <property name="text">
              <string>Winograd</string>
             </property>
@@ -271,10 +341,15 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>250</y>
+          <y>100</y>
           <width>91</width>
           <height>20</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
         </property>
         <property name="text">
          <string>Data CSV Path</string>
@@ -284,10 +359,15 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>370</y>
+          <y>220</y>
           <width>111</width>
           <height>20</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
         </property>
         <property name="text">
          <string>Number of Epochs</string>
@@ -297,10 +377,15 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>330</y>
+          <y>180</y>
           <width>91</width>
           <height>20</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
         </property>
         <property name="text">
          <string>Learning Rate</string>
@@ -310,10 +395,15 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>290</y>
+          <y>140</y>
           <width>71</width>
           <height>20</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
         </property>
         <property name="text">
          <string>Batch Size</string>
@@ -323,10 +413,15 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>450</y>
+          <y>300</y>
           <width>91</width>
           <height>20</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
         </property>
         <property name="text">
          <string>Loss Function</string>
@@ -336,10 +431,15 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>410</y>
+          <y>260</y>
           <width>71</width>
           <height>20</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
         </property>
         <property name="text">
          <string>Optimizer</string>
@@ -349,7 +449,7 @@
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>250</y>
+          <y>100</y>
           <width>154</width>
           <height>26</height>
          </rect>
@@ -359,6 +459,11 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: white;</string>
@@ -368,7 +473,7 @@
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>370</y>
+          <y>220</y>
           <width>154</width>
           <height>26</height>
          </rect>
@@ -378,6 +483,11 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: white;</string>
@@ -387,7 +497,7 @@
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>330</y>
+          <y>180</y>
           <width>154</width>
           <height>26</height>
          </rect>
@@ -397,6 +507,11 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: white;</string>
@@ -406,7 +521,7 @@
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>290</y>
+          <y>140</y>
           <width>154</width>
           <height>26</height>
          </rect>
@@ -417,6 +532,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true">background-color: white;</string>
         </property>
@@ -425,20 +545,48 @@
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>410</y>
+          <y>260</y>
           <width>151</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
         </property>
        </widget>
        <widget class="QComboBox" name="comboBox_lossFunc">
         <property name="geometry">
          <rect>
           <x>190</x>
-          <y>450</y>
+          <y>300</y>
           <width>151</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
+        </property>
+       </widget>
+       <widget class="Line" name="line_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>340</y>
+          <width>162</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </widget>
@@ -453,6 +601,12 @@
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
              <widget class="QGroupBox" name="groupBox_3">
+              <property name="font">
+               <font>
+                <family>Siemens Sans</family>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="title">
                <string>Layer</string>
               </property>
@@ -464,6 +618,11 @@
                  <width>171</width>
                  <height>26</height>
                 </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Siemens Sans</family>
+                </font>
                </property>
                <property name="styleSheet">
                 <string notr="true">background-color: white;</string>
@@ -478,6 +637,12 @@
                  <height>331</height>
                 </rect>
                </property>
+               <property name="font">
+                <font>
+                 <family>Siemens Sans</family>
+                 <bold>true</bold>
+                </font>
+               </property>
                <property name="title">
                 <string>Parameters</string>
                </property>
@@ -490,11 +655,21 @@
                   <height>137</height>
                  </rect>
                 </property>
+                <property name="font">
+                 <font>
+                  <family>Siemens Sans</family>
+                 </font>
+                </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_2">
                  <item>
                   <layout class="QVBoxLayout" name="verticalLayout_4">
                    <item>
                     <widget class="QLabel" name="label_6">
+                     <property name="font">
+                      <font>
+                       <family>Siemens Sans</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>Kernel Size</string>
                      </property>
@@ -502,6 +677,11 @@
                    </item>
                    <item>
                     <widget class="QLabel" name="label_8">
+                     <property name="font">
+                      <font>
+                       <family>Siemens Sans</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>No of Filters</string>
                      </property>
@@ -509,15 +689,13 @@
                    </item>
                    <item>
                     <widget class="QLabel" name="label_9">
+                     <property name="font">
+                      <font>
+                       <family>Siemens Sans</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>Stride</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_10">
-                     <property name="text">
-                      <string>No of Units</string>
                      </property>
                     </widget>
                    </item>
@@ -527,6 +705,11 @@
                   <layout class="QVBoxLayout" name="verticalLayout_5">
                    <item>
                     <widget class="QLineEdit" name="kernelsize">
+                     <property name="font">
+                      <font>
+                       <family>Siemens Sans</family>
+                      </font>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">background-color: white;</string>
                      </property>
@@ -534,6 +717,11 @@
                    </item>
                    <item>
                     <widget class="QLineEdit" name="filters">
+                     <property name="font">
+                      <font>
+                       <family>Siemens Sans</family>
+                      </font>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">background-color: white;</string>
                      </property>
@@ -541,13 +729,11 @@
                    </item>
                    <item>
                     <widget class="QLineEdit" name="stride">
-                     <property name="styleSheet">
-                      <string notr="true">background-color: white;</string>
+                     <property name="font">
+                      <font>
+                       <family>Siemens Sans</family>
+                      </font>
                      </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLineEdit" name="units">
                      <property name="styleSheet">
                       <string notr="true">background-color: white;</string>
                      </property>
@@ -566,6 +752,11 @@
                   <height>91</height>
                  </rect>
                 </property>
+                <property name="font">
+                 <font>
+                  <family>Siemens Sans</family>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgb(222, 222, 222);</string>
                 </property>
@@ -581,9 +772,19 @@
                    <height>28</height>
                   </rect>
                  </property>
+                 <property name="font">
+                  <font>
+                   <family>Siemens Sans</family>
+                  </font>
+                 </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_3">
                   <item>
                    <widget class="QRadioButton" name="yes">
+                    <property name="font">
+                     <font>
+                      <family>Siemens Sans</family>
+                     </font>
+                    </property>
                     <property name="text">
                      <string>Yes</string>
                     </property>
@@ -591,6 +792,11 @@
                   </item>
                   <item>
                    <widget class="QRadioButton" name="no">
+                    <property name="font">
+                     <font>
+                      <family>Siemens Sans</family>
+                     </font>
+                    </property>
                     <property name="text">
                      <string>No</string>
                     </property>
@@ -608,9 +814,19 @@
                   <height>31</height>
                  </rect>
                 </property>
+                <property name="font">
+                 <font>
+                  <family>Siemens Sans</family>
+                 </font>
+                </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_4">
                  <item>
                   <widget class="QPushButton" name="layerbutton">
+                   <property name="font">
+                    <font>
+                     <family>Siemens Sans</family>
+                    </font>
+                   </property>
                    <property name="text">
                     <string>Submit Layer</string>
                    </property>
@@ -618,6 +834,11 @@
                  </item>
                  <item>
                   <widget class="QPushButton" name="Arch">
+                   <property name="font">
+                    <font>
+                     <family>Siemens Sans</family>
+                    </font>
+                   </property>
                    <property name="text">
                     <string>Submit Architecture</string>
                    </property>
@@ -634,6 +855,11 @@
                  <width>461</width>
                  <height>351</height>
                 </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Siemens Sans</family>
+                </font>
                </property>
                <property name="styleSheet">
                 <string notr="true">background-color: white;</string>
@@ -676,6 +902,12 @@
           <height>20</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
          <string>Generated Files</string>
         </property>
@@ -689,8 +921,14 @@
           <height>20</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
-         <string>Code Sample</string>
+         <string>SystemC code</string>
         </property>
        </widget>
        <widget class="QWidget" name="layoutWidget">
@@ -698,22 +936,32 @@
          <rect>
           <x>270</x>
           <y>460</y>
-          <width>195</width>
+          <width>300</width>
           <height>31</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QPushButton" name="generate">
+           <property name="font">
+            <font>
+             <family>Siemens Sans</family>
+            </font>
+           </property>
            <property name="text">
-            <string>Generate</string>
+            <string>Generate pytorch Model</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="systemC">
+           <property name="font">
+            <font>
+             <family>Siemens Sans</family>
+            </font>
+           </property>
            <property name="text">
-            <string>Update</string>
+            <string>Generate SystemC module</string>
            </property>
           </widget>
          </item>

@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     horizontalHeader.append("Layer name");
-    horizontalHeader.append("Kernal");
+    horizontalHeader.append("Kernel");
     horizontalHeader.append("Filters");
     horizontalHeader.append("Stride");
     horizontalHeader.append("Units");
@@ -93,7 +93,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->tableView-> setModel(model);
     ui->tableView_2 ->setModel(model_2);
-
+    ui->systemC->setEnabled(false);
 }
 
 MainWindow::~MainWindow()
@@ -136,6 +136,7 @@ void MainWindow::on_submit_clicked()
 
 
 
+
     double arithmetic(0);
     double input_type(0);
     double conv(0);
@@ -162,16 +163,7 @@ void MainWindow::on_submit_clicked()
         input_type_color = "Gray Scale";
     }
 
-    if(ui->Fixed->isChecked())
-    {
-        arithmetic = 1;
-        arithmetic_type = "Fixed";
-    }
-    else if (ui->Float->isChecked())
-    {
-        arithmetic = 0;
-        arithmetic_type = "Float";
-    }
+
     if(ui->Winograd->isChecked())
     {
         conv = 1;
@@ -298,7 +290,6 @@ static int conv_flag = 1;
         convolution.kernel_size = (ui->kernelsize->text()).toInt();
         convolution.stride = (ui->stride->text()).toInt();
         convolution.filters = (ui->filters->text()).toInt();
-        convolution.units = (ui->units->text()).toInt();
         convolution.height = input_height;
         convolution.width = input_width;
         convolution.channels = input_channel;
@@ -312,7 +303,6 @@ static int conv_flag = 1;
         convolution.kernel_size = (ui->kernelsize->text()).toInt();
         convolution.stride = (ui->stride->text()).toInt();
         convolution.filters = input_channel;
-        convolution.units = (ui->units->text()).toInt();
         convolution.height = input_height;
         convolution.width = input_width;
         convolution.channels = input_channel;
@@ -326,7 +316,6 @@ static int conv_flag = 1;
         convolution.kernel_size = (ui->kernelsize->text()).toInt();
         convolution.stride = (ui->stride->text()).toInt();
         convolution.filters = input_channel;
-        convolution.units = (ui->units->text()).toInt();
         convolution.height = input_height;
         convolution.width = input_width;
         convolution.channels = input_channel;
@@ -340,7 +329,6 @@ static int conv_flag = 1;
         convolution.kernel_size = (ui->kernelsize->text()).toInt();
         convolution.stride = (ui->stride->text()).toInt();
         convolution.filters = (ui->filters->text()).toInt();
-        convolution.units = (ui->units->text()).toInt();
         convolution.height = input_height;
         convolution.width = input_width;
         convolution.channels = input_channel;
@@ -534,28 +522,52 @@ void MainWindow::on_Arch_clicked()
 
 void MainWindow::on_generate_clicked()
 {
+    QString scriptPath = "C:/Users/HP/PycharmProjects/DNN/gradProject/CNN.py";
+    // Create a QProcess object
+    QProcess *process = new QProcess(this);
+    // Set the working directory to the directory containing the script
+    process->setWorkingDirectory(QFileInfo(scriptPath).path());
+    // Set the process to use merged output channels
+    process->setProcessChannelMode(QProcess::MergedChannels);
+    // Connect the readyRead signal to a slot that will handle the script's output
+    connect(process, &QProcess::readyRead, this, &MainWindow::onProcessPythonReady);
+    // Start the process using the "python" command and the path to the script as arguments
+    process->start("python", QStringList() << scriptPath);
 
+    ui->systemC->setEnabled(true);
+}
+void MainWindow::onProcessPythonReady()
+{
+// Get the QProcess object that sent the signal
+QProcess *process = qobject_cast<QProcess*>(sender());
+// Read the output of the process
+QString output = process->readAll();
+// Display the output in a QTextEdit or QPlainTextEdit widget in the frame
 
-
-
-  //  system("perl C:/Users/user/Desktop/Generator/CNN_generator.pl");
-  //  perl C:\Users\user\Desktop\Generator\cnn_generator.pl
-        QString scriptPath = "C:/Users/HP/source/repos/QTtest/x64/Debug/QTtest.exe";
-
-        // Create a QProcess object
-        QProcess *process = new QProcess(this);
-
-        // Set the process to use merged output channels
-        process->setProcessChannelMode(QProcess::MergedChannels);
-
-        // Connect the readyRead signal to a slot that will handle the script's output
-        connect(process, &QProcess::readyRead, this, &MainWindow::onProcessOutputReady);
-
-        // Start the process using the "python" command and the path to the script as arguments
-        process->start(scriptPath);
 
 }
-void MainWindow::onProcessOutputReady()
+
+
+
+
+void MainWindow::on_systemC_clicked()
+{
+    QString scriptPath = "C:/Users/HP/source/repos/QTtest/x64/Debug/QTtest.exe";
+
+      // Create a QProcess object
+      QProcess *process = new QProcess(this);
+
+      // Set the process to use merged output channels
+      process->setProcessChannelMode(QProcess::MergedChannels);
+
+      // Connect the readyRead signal to a slot that will handle the script's output
+      connect(process, &QProcess::readyRead, this, &MainWindow::onProcessSystemcReady);
+
+      // Start the process using the "python" command and the path to the script as arguments
+      process->start(scriptPath);
+
+}
+void MainWindow::onProcessSystemcReady()
 {
     // Get the QProcess object that sent the signal
     QProcess *process = qobject_cast<QProcess*>(sender());
@@ -569,19 +581,6 @@ void MainWindow::onProcessOutputReady()
 
 }
 
-/*
-void MainWindow::on_pushButton_clicked()
-{
-    QString data = ui->outputfile->text();
-    QDir dir("C:/Users/user/Desktop/Generator/"+data);
-    foreach (QFileInfo var, dir.entryInfoList())
-    {
-        ui-> listWidget -> addItem(var.fileName());
-    }
-
-
-}
-*/
 
 
 void MainWindow::on_layer_currentIndexChanged(int index)
@@ -592,10 +591,10 @@ void MainWindow::on_layer_currentIndexChanged(int index)
     ui->filters->show();
     ui->label_6->show();
     ui->label_9->show();
-    ui->label_10->show();
+    //ui->label_10->show();
     ui->kernelsize->show();
     ui->stride->show();
-    ui->units->show();
+    //ui->units->show();
     ui->padding->show();
 
 
@@ -608,20 +607,20 @@ void MainWindow::on_layer_currentIndexChanged(int index)
     {
         ui->label_6->hide();
         ui->label_9->hide();
-        ui->label_10->hide();
+        //ui->label_10->hide();
         ui->kernelsize->hide();
         ui->stride->hide();
-        ui->units->hide();
+        //ui->units->hide();
         ui->padding->hide();
     }
     else if (index == 4)
     {
         ui->label_6->hide();
         ui->label_9->hide();
-        ui->label_10->hide();
+        //ui->label_10->hide();
         ui->kernelsize->hide();
         ui->stride->hide();
-        ui->units->hide();
+        //ui->units->hide();
         ui->padding->hide();
         ui->label_8->hide();
         ui->filters->hide();

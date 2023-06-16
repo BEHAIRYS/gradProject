@@ -30,7 +30,8 @@ private slots:
 
 
     void on_generate_clicked();
-    void onProcessOutputReady();
+    void onProcessSystemcReady();
+    void onProcessPythonReady();
 
    // void on_layer_activated(int index);
 
@@ -38,7 +39,7 @@ private slots:
 
     void on_layer_currentIndexChanged(int index);
 
-    void on_pushButton_clicked();
+    void on_systemC_clicked();
 
     //void on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 

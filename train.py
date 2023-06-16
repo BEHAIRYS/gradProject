@@ -95,6 +95,6 @@ with torch.no_grad():
 				torch.float).sum().item()
 		print(testCorrect)
 
-torch.save(model.state_dict(), "model.pth")
+torch.save(model, "model.pt")
 
     
