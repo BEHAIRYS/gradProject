@@ -540,13 +540,10 @@ void MainWindow::on_generate_clicked()
 
   //  system("perl C:/Users/user/Desktop/Generator/CNN_generator.pl");
   //  perl C:\Users\user\Desktop\Generator\cnn_generator.pl
-        QString scriptPath = "path/to/pyfile";
+        QString scriptPath = "C:/Users/HP/source/repos/QTtest/x64/Debug/QTtest.exe";
 
         // Create a QProcess object
         QProcess *process = new QProcess(this);
-
-        // Set the working directory to the directory containing the script
-        process->setWorkingDirectory(QFileInfo(scriptPath).path());
 
         // Set the process to use merged output channels
         process->setProcessChannelMode(QProcess::MergedChannels);
@@ -555,18 +552,20 @@ void MainWindow::on_generate_clicked()
         connect(process, &QProcess::readyRead, this, &MainWindow::onProcessOutputReady);
 
         // Start the process using the "python" command and the path to the script as arguments
-        process->start("python", QStringList() << scriptPath);
+        process->start(scriptPath);
+
 }
 void MainWindow::onProcessOutputReady()
 {
     // Get the QProcess object that sent the signal
     QProcess *process = qobject_cast<QProcess*>(sender());
 
+    QByteArray output = process->readAllStandardOutput();
     // Read the output of the process
-    QString output = process->readAll();
+    QString outputString(output);
 
     // Display the output in a QTextEdit or QPlainTextEdit widget in the frame
-    ui->textBrowser->setPlainText(output);
+    ui->textBrowser->setPlainText(outputString);
 
 }
 

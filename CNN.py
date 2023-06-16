@@ -3,6 +3,7 @@ from abc import ABC
 from DNN import DNN
 from Layer import Layer
 import json
+import subprocess
 
 
 class Cnn(DNN, ABC):
@@ -26,7 +27,15 @@ from torch.utils.data import DataLoader , TensorDataset
 from torchvision.datasets import mnist
 from torchvision.transforms import ToTensor
 from model import CNN
+from torch.optim import Adadelta
 from torch.optim import Adam\n'''
+    def run_systemC(self):
+        cpp_file_path = "C:/Users/HP/source/repos/QTtest/QTtest/QTtest.cpp"
+
+        # Compile the C++ file
+        subprocess.run(["g++", cpp_file_path, "-o", "output"])
+        # Run the compiled executable
+        subprocess.run(["./output"])
 
     def parse_json(self):
         with open("C:/Users/HP/Downloads/GP/2022_GP/build-GP-Desktop_Qt_6_4_2_MinGW_64_bit-Debug/arch.json",
@@ -132,7 +141,7 @@ from torch.optim import Adam\n'''
 #dataset=TensorDataset(x,y)
 #size = len(df)
 #initiallization
-LR = 0.001
+LR = {self.learning_rate}
 BATCH_SIZE = {self.batch_size}
 EPOCHS = {self.num_epochs}
 TRAIN_SPLIT = 0.75
@@ -222,6 +231,7 @@ torch.save(model.state_dict(), "model.pth")
         self.create_layers()
         # if self.train == True:
         self.train_build()
+        self.run_systemC()
 
 
 model = Cnn()
