@@ -552,19 +552,19 @@ QString output = process->readAll();
 
 void MainWindow::on_systemC_clicked()
 {
-    QString scriptPath = "C:/Users/HP/source/repos/QTtest/x64/Debug/QTtest.exe";
+    QString scriptPath = "C:/Users/HP/source/repos/QTtest/QTtest/QTtest.cpp";
+    displayCppCode(scriptPath);
+//      // Create a QProcess object
+//      QProcess *process = new QProcess(this);
 
-      // Create a QProcess object
-      QProcess *process = new QProcess(this);
+//      // Set the process to use merged output channels
+//      process->setProcessChannelMode(QProcess::MergedChannels);
 
-      // Set the process to use merged output channels
-      process->setProcessChannelMode(QProcess::MergedChannels);
+//      // Connect the readyRead signal to a slot that will handle the script's output
+//      connect(process, &QProcess::readyRead, this, &MainWindow::onProcessSystemcReady);
 
-      // Connect the readyRead signal to a slot that will handle the script's output
-      connect(process, &QProcess::readyRead, this, &MainWindow::onProcessSystemcReady);
-
-      // Start the process using the "python" command and the path to the script as arguments
-      process->start(scriptPath);
+//      // Start the process using the "python" command and the path to the script as arguments
+//      process->start(scriptPath);
 
 }
 void MainWindow::onProcessSystemcReady()
@@ -580,6 +580,20 @@ void MainWindow::onProcessSystemcReady()
     ui->textBrowser->setPlainText(outputString);
 
 }
+void MainWindow::displayCppCode(const QString& filePath)
+{
+    QFile file(filePath);
+
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QString codeContent = file.readAll();
+
+        ui->textBrowser->setPlainText(codeContent);
+
+        file.close();
+    }
+}
+
 
 
 

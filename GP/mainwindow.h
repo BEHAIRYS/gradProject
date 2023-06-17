@@ -28,7 +28,7 @@ private slots:
 
     void on_Arch_clicked();
 
-
+    void displayCppCode(const QString&);
     void on_generate_clicked();
     void onProcessSystemcReady();
     void onProcessPythonReady();
