@@ -29,11 +29,14 @@
         <bold>true</bold>
        </font>
       </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(222, 222, 222);</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="Dashboard">
        <attribute name="title">
@@ -79,7 +82,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="tab">
+      <widget class="QWidget" name="Params">
        <attribute name="title">
         <string>Miscellaneous Parameters</string>
        </attribute>
@@ -590,7 +593,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="Architecture">
        <attribute name="title">
         <string>Architecture</string>
        </attribute>
@@ -664,6 +667,18 @@
                  <item>
                   <layout class="QVBoxLayout" name="verticalLayout_4">
                    <item>
+                    <widget class="QLabel" name="label_10">
+                     <property name="font">
+                      <font>
+                       <family>Siemens Sans</family>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>No of Units</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
                     <widget class="QLabel" name="label_6">
                      <property name="font">
                       <font>
@@ -703,6 +718,18 @@
                  </item>
                  <item>
                   <layout class="QVBoxLayout" name="verticalLayout_5">
+                   <item>
+                    <widget class="QLineEdit" name="units">
+                     <property name="font">
+                      <font>
+                       <family>Siemens Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: white;</string>
+                     </property>
+                    </widget>
+                   </item>
                    <item>
                     <widget class="QLineEdit" name="kernelsize">
                      <property name="font">
@@ -876,29 +903,87 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_3">
+      <widget class="QWidget" name="OutputFiles">
        <attribute name="title">
         <string>Output Files</string>
        </attribute>
-       <widget class="QListWidget" name="listWidget">
+       <widget class="QLabel" name="Lcode">
         <property name="geometry">
          <rect>
-          <x>31</x>
-          <y>52</y>
-          <width>261</width>
-          <height>391</height>
+          <x>390</x>
+          <y>20</y>
+          <width>301</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Code Sample</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QTextBrowser" name="codeSample">
+        <property name="geometry">
+         <rect>
+          <x>390</x>
+          <y>60</y>
+          <width>301</width>
+          <height>301</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: white;</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_11">
+       <widget class="QPushButton" name="generate">
         <property name="geometry">
          <rect>
-          <x>110</x>
+          <x>70</x>
+          <y>380</y>
+          <width>161</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>Generate Pytorch Model</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="train">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>380</y>
+          <width>161</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Siemens Sans</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>Train Pytorch Model</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="Lgenerated">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
           <y>20</y>
-          <width>111</width>
+          <width>261</width>
           <height>20</height>
          </rect>
         </property>
@@ -911,75 +996,49 @@
         <property name="text">
          <string>Generated Files</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
-       <widget class="QLabel" name="label_12">
+       <widget class="QPushButton" name="systemC">
         <property name="geometry">
          <rect>
-          <x>480</x>
-          <y>20</y>
-          <width>101</width>
-          <height>20</height>
+          <x>540</x>
+          <y>380</y>
+          <width>161</width>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
          <font>
           <family>Siemens Sans</family>
-          <bold>true</bold>
          </font>
         </property>
         <property name="text">
-         <string>SystemC code</string>
+         <string>SystemC wrapper</string>
         </property>
        </widget>
-       <widget class="QWidget" name="layoutWidget">
+       <widget class="QListWidget" name="generatedFiles">
         <property name="geometry">
          <rect>
-          <x>270</x>
-          <y>460</y>
-          <width>300</width>
-          <height>31</height>
+          <x>40</x>
+          <y>60</y>
+          <width>271</width>
+          <height>301</height>
          </rect>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
-          <widget class="QPushButton" name="generate">
-           <property name="font">
-            <font>
-             <family>Siemens Sans</family>
-            </font>
-           </property>
-           <property name="text">
-            <string>Generate pytorch Model</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="systemC">
-           <property name="font">
-            <font>
-             <family>Siemens Sans</family>
-            </font>
-           </property>
-           <property name="text">
-            <string>Generate SystemC module</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QTextBrowser" name="textBrowser">
-        <property name="geometry">
-         <rect>
-          <x>330</x>
-          <y>51</y>
-          <width>411</width>
-          <height>391</height>
-         </rect>
+        <property name="autoFillBackground">
+         <bool>true</bool>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: white;</string>
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
         </property>
        </widget>
+      </widget>
+      <widget class="QWidget" name="GeneratedFiles">
+       <attribute name="title">
+        <string>Generated Files</string>
+       </attribute>
       </widget>
      </widget>
     </item>

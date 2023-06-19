@@ -32,8 +32,8 @@ test_dataset = mnist.MNIST(root='./test', train=False, transform=ToTensor())
 train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 #val_dataloader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
 test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
-opt = Adadelta(model.parameters(), lr=0.001)
-lossFn = nn.L1Loss()
+opt = Adam(model.parameters(), lr=0.001)
+lossFn = nn.MSELoss()
 for e in range(0, EPOCHS):
     # set the model in training mode
     model.train()
@@ -95,6 +95,6 @@ with torch.no_grad():
 				torch.float).sum().item()
 		print(testCorrect)
 
-torch.save(model, "model.pt")
+torch.save(model.state_dict(), "model.pth")
 
     

@@ -5,6 +5,8 @@
 #include <QStandardItemModel>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QTextBrowser>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -28,14 +30,17 @@ private slots:
 
     void on_Arch_clicked();
 
-    void displayCppCode(const QString&);
+    void displayCppCode(const QString& filePath,QTextBrowser* textBrowser);
     void on_generate_clicked();
     void onProcessSystemcReady();
     void onProcessPythonReady();
+    void on_train_clicked();
+    void onProcessModelReady();
+    void onProcessTrainReady();
 
    // void on_layer_activated(int index);
 
-    //void on_layer_currentTextChanged(const QString &arg1);
+    void on_layer_currentTextChanged(const QString &arg1);
 
     void on_layer_currentIndexChanged(int index);
 
@@ -49,7 +54,7 @@ private slots:
 
     //void on_listWidget_currentRowChanged(int currentRow);
 
-    void on_listWidget_itemSelectionChanged();
+    void on_generatedFiles_itemSelectionChanged();
 
 private:
     Ui::MainWindow *ui;

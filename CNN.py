@@ -87,7 +87,7 @@ from torch.optim import Adam\n'''
             if 'avg' in layer.name:
                 ascii = ord(self.avgpool_lyr)
                 self.torch_code += \
-                    f'''        self.avg{self.mxpool_lyr}=nn.AvgPool2d({layer.kernel_size},stride={layer.stride},padding={layer.padding})\n'''
+                    f'''        self.avg{self.avgpool_lyr}=nn.AvgPool2d({layer.kernel_size},stride={layer.stride},padding={layer.padding})\n'''
                 if (self.layers.index(layer) == 0):
                     self.forward += f'      out=self.avg{self.avgpool_lyr}(x)\n'
                 else:
@@ -223,7 +223,7 @@ torch.save(model.state_dict(), "model.pth")
     def BuildModel(self):
         self.parse_json()
         self.create_layers()
-        if self.csv_path != '':
+        if self.train == True:
             self.train_build()
 
 

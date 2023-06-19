@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->layer->addItem("Flatten");
     ui->layer->addItem("Fully Connected");
 
+
     ui->comboBox_optimizer->addItem("Adadelta");
     ui->comboBox_optimizer->addItem("Adagrad");
     ui->comboBox_optimizer->addItem("Adam");
@@ -124,6 +125,8 @@ QString num_epochs;
 QString csv_path;
 QString optimizer;
 QString loss_fun;
+bool train= false;
+
 
 void MainWindow::on_submit_clicked()
 {
@@ -290,6 +293,7 @@ static int conv_flag = 1;
         convolution.kernel_size = (ui->kernelsize->text()).toInt();
         convolution.stride = (ui->stride->text()).toInt();
         convolution.filters = (ui->filters->text()).toInt();
+        convolution.units = (ui->units->text()).toInt();
         convolution.height = input_height;
         convolution.width = input_width;
         convolution.channels = input_channel;
@@ -303,6 +307,7 @@ static int conv_flag = 1;
         convolution.kernel_size = (ui->kernelsize->text()).toInt();
         convolution.stride = (ui->stride->text()).toInt();
         convolution.filters = input_channel;
+        convolution.units = (ui->units->text()).toInt();
         convolution.height = input_height;
         convolution.width = input_width;
         convolution.channels = input_channel;
@@ -316,6 +321,7 @@ static int conv_flag = 1;
         convolution.kernel_size = (ui->kernelsize->text()).toInt();
         convolution.stride = (ui->stride->text()).toInt();
         convolution.filters = input_channel;
+        convolution.units = (ui->units->text()).toInt();
         convolution.height = input_height;
         convolution.width = input_width;
         convolution.channels = input_channel;
@@ -329,6 +335,7 @@ static int conv_flag = 1;
         convolution.kernel_size = (ui->kernelsize->text()).toInt();
         convolution.stride = (ui->stride->text()).toInt();
         convolution.filters = (ui->filters->text()).toInt();
+        convolution.units = (ui->units->text()).toInt();
         convolution.height = input_height;
         convolution.width = input_width;
         convolution.channels = input_channel;
@@ -470,12 +477,13 @@ void MainWindow::on_Arch_clicked()
     params["csv_path"]=csv_path.toStdString();
     params["optimizer"]=optimizer.toStdString();
     params["loss_fun"]=loss_fun.toStdString();
+    params["train"]=train;
     root["params"].push_back(params);
 
     std::ofstream file("arch.json");
     file << root;
     file.close();
-
+    //ui->generatedFiles->addItem("arch.json");
     /*
     Json::Value root;
         for (int i = 0; i < 100; i++) {
@@ -530,13 +538,44 @@ void MainWindow::on_generate_clicked()
     // Set the process to use merged output channels
     process->setProcessChannelMode(QProcess::MergedChannels);
     // Connect the readyRead signal to a slot that will handle the script's output
-    connect(process, &QProcess::readyRead, this, &MainWindow::onProcessPythonReady);
+    connect(process, &QProcess::readyRead, this, &MainWindow::onProcessModelReady);
+    // Start the process using the "python" command and the path to the script as arguments
+    process->start("python", QStringList() << scriptPath);
+
+
+    ui->generatedFiles->addItem("model.py");
+}
+void MainWindow::on_train_clicked()
+{
+    train = true;
+    QString scriptPath = "C:/Users/HP/PycharmProjects/DNN/gradProject/CNN.py";
+    // Create a QProcess object
+    QProcess *process = new QProcess(this);
+    // Set the working directory to the directory containing the script
+    process->setWorkingDirectory(QFileInfo(scriptPath).path());
+    // Set the process to use merged output channels
+    process->setProcessChannelMode(QProcess::MergedChannels);
+    // Connect the readyRead signal to a slot that will handle the script's output
+    connect(process, &QProcess::readyRead, this, &MainWindow::onProcessTrainReady);
     // Start the process using the "python" command and the path to the script as arguments
     process->start("python", QStringList() << scriptPath);
 
     ui->systemC->setEnabled(true);
+    ui->generatedFiles->addItem("train.py");
 }
-void MainWindow::onProcessPythonReady()
+
+
+void MainWindow::onProcessModelReady()
+{
+// Get the QProcess object that sent the signal
+QProcess *process = qobject_cast<QProcess*>(sender());
+// Read the output of the process
+QString output = process->readAll();
+// Display the output in a QTextEdit or QPlainTextEdit widget in the frame
+
+
+}
+void MainWindow::onProcessTrainReady()
 {
 // Get the QProcess object that sent the signal
 QProcess *process = qobject_cast<QProcess*>(sender());
@@ -550,49 +589,23 @@ QString output = process->readAll();
 
 
 
+
+
+
 void MainWindow::on_systemC_clicked()
 {
-    QString scriptPath = "C:/Users/HP/source/repos/QTtest/QTtest/QTtest.cpp";
-    displayCppCode(scriptPath);
-//      // Create a QProcess object
-//      QProcess *process = new QProcess(this);
 
-//      // Set the process to use merged output channels
-//      process->setProcessChannelMode(QProcess::MergedChannels);
 
-//      // Connect the readyRead signal to a slot that will handle the script's output
-//      connect(process, &QProcess::readyRead, this, &MainWindow::onProcessSystemcReady);
 
-//      // Start the process using the "python" command and the path to the script as arguments
-//      process->start(scriptPath);
+    ui->generatedFiles->addItem("Initiator.h");
+    ui->generatedFiles->addItem("Initiator.cpp");
+    ui->generatedFiles->addItem("Target.h");
+    ui->generatedFiles->addItem("TestBench.cpp");
+    ui->generatedFiles->addItem("main.cpp");
+
 
 }
-void MainWindow::onProcessSystemcReady()
-{
-    // Get the QProcess object that sent the signal
-    QProcess *process = qobject_cast<QProcess*>(sender());
 
-    QByteArray output = process->readAllStandardOutput();
-    // Read the output of the process
-    QString outputString(output);
-
-    // Display the output in a QTextEdit or QPlainTextEdit widget in the frame
-    ui->textBrowser->setPlainText(outputString);
-
-}
-void MainWindow::displayCppCode(const QString& filePath)
-{
-    QFile file(filePath);
-
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        QString codeContent = file.readAll();
-
-        ui->textBrowser->setPlainText(codeContent);
-
-        file.close();
-    }
-}
 
 
 
@@ -605,10 +618,10 @@ void MainWindow::on_layer_currentIndexChanged(int index)
     ui->filters->show();
     ui->label_6->show();
     ui->label_9->show();
-    //ui->label_10->show();
+    ui->label_10->show();
     ui->kernelsize->show();
     ui->stride->show();
-    //ui->units->show();
+    ui->units->show();
     ui->padding->show();
 
 
@@ -621,20 +634,20 @@ void MainWindow::on_layer_currentIndexChanged(int index)
     {
         ui->label_6->hide();
         ui->label_9->hide();
-        //ui->label_10->hide();
+        ui->label_10->hide();
         ui->kernelsize->hide();
         ui->stride->hide();
-        //ui->units->hide();
+        ui->units->hide();
         ui->padding->hide();
     }
     else if (index == 4)
     {
         ui->label_6->hide();
         ui->label_9->hide();
-        //ui->label_10->hide();
+        ui->label_10->hide();
         ui->kernelsize->hide();
         ui->stride->hide();
-        //ui->units->hide();
+        ui->units->hide();
         ui->padding->hide();
         ui->label_8->hide();
         ui->filters->hide();
@@ -643,14 +656,15 @@ void MainWindow::on_layer_currentIndexChanged(int index)
 }
 
 
-void MainWindow::on_listWidget_itemSelectionChanged()
+void MainWindow::on_generatedFiles_itemSelectionChanged()
 {
-    QString indata = ui->listWidget-> currentItem()->text();
+    QString indata = ui->generatedFiles-> currentItem()->text();
 
-    QFile file_4("C:/Users/user/Desktop/Generator/drone_rtl/"+indata);
+    QFile file_4("C:/Users/HP/PycharmProjects/DNN/gradProject/"+indata);
     if (!file_4.open(QIODevice::ReadOnly))
         QMessageBox::information(0,"info",file_4.errorString());
     QTextStream in (&file_4);
-    ui->textBrowser->setText(in.readAll());
-}
+    ui->codeSample->setText(in.readAll());
 
+
+}
