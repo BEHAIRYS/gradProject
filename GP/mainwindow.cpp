@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBox_lossFunc->addItem("NLLLoss");
 
     model = new QStandardItemModel (10, 6 , this);
-    model_2 = new QStandardItemModel (7 , 2 , this);
+    model_2 = new QStandardItemModel (10 , 2 , this);
 
 
     horizontalHeader.append("Layer name");
@@ -87,9 +87,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     /******** TODO: add the comboBoxes **********/
 
-    QModelIndex index_44 = model_2->index(13,0,QModelIndex());
+    QModelIndex index_44 = model_2->index(8,0,QModelIndex());
     model_2->setData(index_44, "Optimizer");
-    QModelIndex index_45 = model_2->index(14,0,QModelIndex());
+    QModelIndex index_45 = model_2->index(9,0,QModelIndex());
     model_2->setData(index_45, "Loss Function");
 
     ui->tableView-> setModel(model);
