@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBox_lossFunc->addItem("NLLLoss");
 
     model = new QStandardItemModel (10, 6 , this);
-    model_2 = new QStandardItemModel (15 , 2 , this);
+    model_2 = new QStandardItemModel (7 , 2 , this);
 
 
     horizontalHeader.append("Layer name");
@@ -63,26 +63,26 @@ MainWindow::MainWindow(QWidget *parent)
 //    model_2->setData(index_32, "Mantissa");
 //    QModelIndex index_33 = model_2->index(2,0,QModelIndex());
 //    model_2->setData(index_33, "Exponent");
-    QModelIndex index_34 = model_2->index(3,0,QModelIndex());
+    QModelIndex index_34 = model_2->index(0,0,QModelIndex());
     model_2->setData(index_34, "Input Width");
-    QModelIndex index_35 = model_2->index(4,0,QModelIndex());
+    QModelIndex index_35 = model_2->index(1,0,QModelIndex());
     model_2->setData(index_35, "Input Height");
 //    QModelIndex index_36 = model_2->index(5,0,QModelIndex());
 //    model_2->setData(index_36, "Output Files Path");
-    QModelIndex index_37 = model_2->index(6,0,QModelIndex());
+    QModelIndex index_37 = model_2->index(2,0,QModelIndex());
     model_2->setData(index_37, "Input Type");
-    QModelIndex index_38 = model_2->index(7,0,QModelIndex());
-    model_2->setData(index_38, "Arithmetic Type");
-    QModelIndex index_39 = model_2->index(8,0,QModelIndex());
+    //QModelIndex index_38 = model_2->index(7,0,QModelIndex());
+    //model_2->setData(index_38, "Arithmetic Type");
+    QModelIndex index_39 = model_2->index(3,0,QModelIndex());
     model_2->setData(index_39, "Convolution Type");
 
-    QModelIndex index_40 = model_2->index(9,0,QModelIndex());
+    QModelIndex index_40 = model_2->index(4,0,QModelIndex());
     model_2->setData(index_40, "Data CSV Path");
-    QModelIndex index_41 = model_2->index(10,0,QModelIndex());
+    QModelIndex index_41 = model_2->index(5,0,QModelIndex());
     model_2->setData(index_41, "Batch Size");
-    QModelIndex index_42 = model_2->index(11,0,QModelIndex());
+    QModelIndex index_42 = model_2->index(6,0,QModelIndex());
     model_2->setData(index_42, "Learning Rate");
-    QModelIndex index_43 = model_2->index(12,0,QModelIndex());
+    QModelIndex index_43 = model_2->index(7,0,QModelIndex());
     model_2->setData(index_43, "Number of Epochs");
 
     /******** TODO: add the comboBoxes **********/
