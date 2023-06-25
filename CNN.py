@@ -212,8 +212,18 @@ with torch.no_grad():
 		testCorrect += (pred.argmax(1) == y).type(
 				torch.float).sum().item()
 		print(testCorrect)
+		
 
-torch.save(model.state_dict(), "model.pth")
+# calculate the training, validation, and test accuracy
+trainAccuracy = trainCorrect / len(train_dataloader.dataset)
+valAccuracy = valCorrect / len(val_dataloader.dataset)
+testAccuracy = testCorrect / len(test_dataloader.dataset)
+
+print("Train Accuracy:", trainAccuracy)
+print("Validation Accuracy:", valAccuracy)
+print("Test Accuracy:", testAccuracy)
+
+torch.save(model, "model.pt")
 
     
 '''

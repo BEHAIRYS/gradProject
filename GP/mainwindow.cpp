@@ -125,7 +125,7 @@ QString num_epochs;
 QString csv_path;
 QString optimizer;
 QString loss_fun;
-bool train= false;
+bool train= 0;
 
 
 void MainWindow::on_submit_clicked()
@@ -204,38 +204,38 @@ void MainWindow::on_submit_clicked()
     QModelIndex index_39 = model_2->index(8,0,QModelIndex());
     model_2->setData(index_39, "Convolution Type");
 */
-    QModelIndex index_21 = model_2->index(0,1,QModelIndex());
+    //QModelIndex index_21 = model_2->index(0,1,QModelIndex());
     //model_2->setData(index_21, ui->datawidth->text());
-    QModelIndex index_22 = model_2->index(1,1,QModelIndex());
+    //QModelIndex index_22 = model_2->index(1,1,QModelIndex());
     //model_2->setData(index_22, ui->mantissa->text());
-    QModelIndex index_23 = model_2->index(2,1,QModelIndex());
+    //QModelIndex index_23 = model_2->index(2,1,QModelIndex());
     //model_2->setData(index_23, ui->exponent->text());
-    QModelIndex index_24 = model_2->index(3,1,QModelIndex());
+    QModelIndex index_24 = model_2->index(0,1,QModelIndex());
     model_2->setData(index_24, ui->inputsize->text());
-    QModelIndex index_25 = model_2->index(4,1,QModelIndex());
+    QModelIndex index_25 = model_2->index(1,1,QModelIndex());
     model_2->setData(index_25, ui->InputHeight->text());
-    QModelIndex index_26 = model_2->index(5,1,QModelIndex());
+    //QModelIndex index_26 = model_2->index(2,1,QModelIndex());
     //model_2->setData(index_26, ui->outputfile->text());
-    QModelIndex index_27 = model_2->index(6,1,QModelIndex());
+    QModelIndex index_27 = model_2->index(2,1,QModelIndex());
     model_2->setData(index_27, input_type_color);
-    QModelIndex index_28 = model_2->index(7,1,QModelIndex());
-    model_2->setData(index_28, arithmetic_type);
-    QModelIndex index_29 = model_2->index(8,1,QModelIndex());
+    //QModelIndex index_28 = model_2->index(4,1,QModelIndex());
+    //model_2->setData(index_28, arithmetic_type);
+    QModelIndex index_29 = model_2->index(3,1,QModelIndex());
     model_2->setData(index_29, conv_type);
 
-    QModelIndex index_30 = model_2->index(9,1,QModelIndex());
+    QModelIndex index_30 = model_2->index(4,1,QModelIndex());
     model_2->setData(index_30, ui->datacsv->text());
-    QModelIndex index_31 = model_2->index(10,1,QModelIndex());
+    QModelIndex index_31 = model_2->index(5,1,QModelIndex());
     model_2->setData(index_31, ui->batchSize->text());
-    QModelIndex index_32 = model_2->index(11,1,QModelIndex());
+    QModelIndex index_32 = model_2->index(6,1,QModelIndex());
     model_2->setData(index_32, ui->learningRate->text());
-    QModelIndex index_33 = model_2->index(12,1,QModelIndex());
+    QModelIndex index_33 = model_2->index(7,1,QModelIndex());
     model_2->setData(index_33, ui->numEpochs->text());
 
     /******** TODO: add the comboBoxes **********/
-    QModelIndex index_34 = model_2->index(13,1,QModelIndex());
+    QModelIndex index_34 = model_2->index(8,1,QModelIndex());
     model_2->setData(index_34, ui->comboBox_optimizer->currentText());
-    QModelIndex index_35 = model_2->index(14,1,QModelIndex());
+    QModelIndex index_35 = model_2->index(9,1,QModelIndex());
     model_2->setData(index_35, ui->comboBox_lossFunc->currentText());
 
     ui->tableView_2-> setModel(model_2);
@@ -547,8 +547,10 @@ void MainWindow::on_generate_clicked()
 }
 void MainWindow::on_train_clicked()
 {
-    train = true;
-    QString scriptPath = "C:/Users/HP/PycharmProjects/DNN/gradProject/CNN.py";
+    train = 1;
+    on_Arch_clicked();
+    on_generate_clicked();
+    QString scriptPath = "C:/Users/HP/PycharmProjects/DNN/gradProject/train.py";
     // Create a QProcess object
     QProcess *process = new QProcess(this);
     // Set the working directory to the directory containing the script
